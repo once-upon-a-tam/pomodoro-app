@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+  
+  <title>Frontend Mentor | Pomodoro app</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<header>
+		<h1>pomodoro</h1>
+	</header>
+	<main>
+		<section id="timer-type-selection">
+			<input type="radio" name="timer-type" value="pomodoro" id="timer-type-input-pomodoro">
+			<label for="timer-type-input-pomodoro">pomodoro</label>
+
+			<input type="radio" name="timer-type" value="short-break" id="timer-type-input-short-break">
+			<label for="timer-type-input-short-break">short break</label>
+
+			<input type="radio" name="timer-type" value="long-break" id="timer-type-input-long-break">
+			<label for="timer-type-input-long-break">long break</label>
+		</section>
+
+		<section id="timer">
+			<button type="button">
+				<svg> 
+					<circle id="progress-ring" r="45" cx="50%" cy="50%" />
+				</svg>
+				<time id="timer-time">
+					<span>18</span>
+					<span>:</span>
+					<span>00</span>
+				</time>
+				<span id="timer-button-label">start</span>
+			</button>
+		</section>
+	</main>
+	<footer>
+		<button type="button" id="settings-dialog-toggle">
+			<img src="assets/icon-settings.svg" alt="settings">
+		</button>
+	</footer>
+
+	<dialog id="settings-dialog">
+		<h2>Settings</h2>
+		<form method="dialog">
+			<fieldset>
+				<legend>Time (minutes)</legend>
+				<label for="pomodoro-time-input">pomodoro</label>
+				<input type="number" id="pomodoro-time-input">
+				<label for="pomodoro-short-break-input">short break</label>
+				<input type="number" id="pomodoro-short-break-input">
+				<label for="pomodoro-long-break-input">long break</label>
+				<input type="number" id="pomodoro-long-break-input">
+			</fieldset>
+			<button type="submit">Apply</button>
+		</form>
+	</dialog>
+	<script src="progress-ring-animation.js"></script>
+</body>
+</html>
