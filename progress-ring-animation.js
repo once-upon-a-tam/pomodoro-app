@@ -1,9 +1,11 @@
 const button = document.querySelector('#timer > button');
 const buttonLabel = button.querySelector("#timer-button-label");
 const progressRing = document.getElementById('progress-ring');
+const progressRingWrapper = document.getElementById('progress-ring-wrapper');
 const timeIndicator = document.querySelector('#timer > button > time');
 
-progressRing.r.baseVal.value = button.getBoundingClientRect().width * 0.45;
+progressRing.r.baseVal.value = button.getBoundingClientRect().width * 0.40;
+progressRingWrapper.r.baseVal.value = button.getBoundingClientRect().width * 0.42;
 
 const progressRingRadius = progressRing.r.baseVal.value;
 const progressRingCircumference = progressRingRadius * 2 * Math.PI;
