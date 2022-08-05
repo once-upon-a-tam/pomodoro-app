@@ -4,21 +4,29 @@ const progressRing = document.getElementById('progress-ring');
 const progressRingWrapper = document.getElementById('progress-ring-wrapper');
 const timeIndicator = document.querySelector('#timer > button > time');
 
+const settingsButton = document.getElementById('settings-dialog-toggle');
+const settingsDialog = document.getElementById('settings-dialog');
+const settingsForm = settingsDialog.querySelector('form');
+const closeDialogButton = document.getElementById('close-dialog');
+
 progressRing.r.baseVal.value = button.getBoundingClientRect().width * 0.40;
 progressRingWrapper.r.baseVal.value = button.getBoundingClientRect().width * 0.42;
 
 const progressRingRadius = progressRing.r.baseVal.value;
 const progressRingCircumference = progressRingRadius * 2 * Math.PI;
 
-
 progressRing.style.strokeDasharray = `${progressRingCircumference} ${progressRingCircumference}`;
 progressRing.style.strokeDashoffset = `${progressRingCircumference}`;
 
+const settings = {
+	pomodoroTime: 1080,
+	shortBreakTime: 300,
+	longBreakTime: 900,
+};
 
-const TIMER_VALUE_IN_SECONDS = 1080;
 let isTimerActive = false;
 let timerRefreshId;
-let remainingTime = TIMER_VALUE_IN_SECONDS;
+let remainingTime = settings.pomodoroTime;
 
 /**
  * @function
@@ -68,13 +76,28 @@ function refreshTimer() {
 			clearInterval(timerRefreshId);
 		}
 
-		updateProgressRing(remainingTime / TIMER_VALUE_IN_SECONDS * 100);
+		updateProgressRing(remainingTime / settings.pomodoroTime * 100);
 		updateTimeIndicator(remainingTime);
 
 		remainingTime--;
 	}, 1000);
 
 	return timerRefreshId;
+}
+
+/**
+ * @function
+ * @name resetTimer
+ * @description Resets the timer to the default value.
+ *
+ * @author Tam
+ */
+const resetTimer = () => {
+	remainingTime = settings.pomodoroTime;
+	clearInterval(timerRefreshId);
+	updateTimeIndicator(remainingTime);
+	updateProgressRing(100);
+	buttonLabel.innerText = 'Start';
 }
 
 /**
@@ -96,6 +119,56 @@ function onTimerButtonClick () {
 
 button.addEventListener('click', function() {
 	onTimerButtonClick();
+});
+
+settingsButton.addEventListener('click', function() {
+	settingsDialog.showModal();
+});
+
+closeDialogButton.addEventListener('click', function() {
+	settingsDialog.close();
+});
+
+/**
+ * @function
+ * @name processFormData
+ * @description Extracts data from the provided form.
+ *
+ * @author Tam
+ *
+ * @param {HTMLElement} form The form to extract data from.
+ *
+ * @returns {object}
+ */
+const processFormData = (form) => {
+	const inputs = [...form.elements].filter((element) => (
+		element.tagName.toLowerCase() === 'input' && element.getAttribute('type') === 'number'
+	));
+
+	const formData = inputs.reduce((data, { name, value }) => ({
+		...data,
+		[name]: value,
+	}), {});
+
+	return formData;
+}
+
+const onSettingsFormSubmit = (event) => {
+	const {
+		pomodoro: pomodoroTime,
+		'short-break': shortBreakTime,
+		'long-break': longBreakTime,
+	} = processFormData(event.target);
+
+	settings.pomodoroTime = pomodoroTime * 60;
+	settings.shortBreakTime = shortBreakTime * 60;
+	settings.longBreakTime = longBreakTime * 60;
+
+	resetTimer();
+};
+
+settingsForm.addEventListener('submit', function(e) {
+	onSettingsFormSubmit(e);
 });
 
 // Initializes the progress bar.

@@ -49,19 +49,24 @@
 	</footer>
 
 	<dialog id="settings-dialog">
-		<h2>Settings</h2>
-		<form method="dialog">
+		<header>
+			<h1>Settings</h1>
+			<button type="button" id="close-dialog">
+				<img src="assets/icon-close.svg" alt="close">
+			</button>
+		</header>
+		<form method="dialog" id="settings-form">
 			<fieldset>
 				<legend>Time (minutes)</legend>
 				<label for="pomodoro-time-input">pomodoro</label>
-				<input type="number" id="pomodoro-time-input">
+				<input type="number" id="pomodoro-time-input" name="pomodoro">
 				<label for="pomodoro-short-break-input">short break</label>
-				<input type="number" id="pomodoro-short-break-input">
+				<input type="number" id="pomodoro-short-break-input" name="short-break">
 				<label for="pomodoro-long-break-input">long break</label>
-				<input type="number" id="pomodoro-long-break-input">
+				<input type="number" id="pomodoro-long-break-input" name="long-break">
 			</fieldset>
-			<button type="submit">Apply</button>
 		</form>
+		<button type="submit" form="settings-form">Apply</button>
 	</dialog>
 	<script src="progress-ring-animation.js"></script>
 </body>
