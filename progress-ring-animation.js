@@ -4,6 +4,8 @@ const progressRing = document.getElementById('progress-ring');
 const progressRingWrapper = document.getElementById('progress-ring-wrapper');
 const timeIndicator = document.querySelector('#timer > button > time');
 
+const timerTypeInputs = document.querySelectorAll('input[name="timer-type"]');
+
 const settingsButton = document.getElementById('settings-dialog-toggle');
 const settingsDialog = document.getElementById('settings-dialog');
 const settingsForm = settingsDialog.querySelector('form');
@@ -19,12 +21,14 @@ progressRing.style.strokeDasharray = `${progressRingCircumference} ${progressRin
 progressRing.style.strokeDashoffset = `${progressRingCircumference}`;
 
 const settings = {
-	pomodoroTime: 1080,
+	pomodoroTime: 1200,
 	shortBreakTime: 300,
-	longBreakTime: 900,
+	longBreakTime: 600,
 };
 
 let isTimerActive = false;
+let selectedTimerType = 'pomodoro';
+timerTypeInputs[0].checked = true;
 let timerRefreshId;
 let remainingTime = settings.pomodoroTime;
 
@@ -76,7 +80,7 @@ function refreshTimer() {
 			clearInterval(timerRefreshId);
 		}
 
-		updateProgressRing(remainingTime / settings.pomodoroTime * 100);
+		updateProgressRing(remainingTime / settings[`${selectedTimerType}Time`] * 100);
 		updateTimeIndicator(remainingTime);
 
 		remainingTime--;
@@ -93,7 +97,7 @@ function refreshTimer() {
  * @author Tam
  */
 const resetTimer = () => {
-	remainingTime = settings.pomodoroTime;
+	remainingTime = settings[`${selectedTimerType}Time`];
 	clearInterval(timerRefreshId);
 	updateTimeIndicator(remainingTime);
 	updateProgressRing(100);
@@ -116,18 +120,6 @@ function onTimerButtonClick () {
 		buttonLabel.innerText = "Start";
 	}
 }
-
-button.addEventListener('click', function() {
-	onTimerButtonClick();
-});
-
-settingsButton.addEventListener('click', function() {
-	settingsDialog.showModal();
-});
-
-closeDialogButton.addEventListener('click', function() {
-	settingsDialog.close();
-});
 
 /**
  * @function
@@ -153,6 +145,12 @@ const processFormData = (form) => {
 	return formData;
 }
 
+const initializeSettingsForm = () => {
+	document.getElementById('pomodoro-time-input').value = settings.pomodoroTime / 60;
+	document.getElementById('pomodoro-short-break-input').value = settings.shortBreakTime / 60;
+	document.getElementById('pomodoro-long-break-input').value = settings.longBreakTime / 60;
+}
+
 const onSettingsFormSubmit = (event) => {
 	const {
 		pomodoro: pomodoroTime,
@@ -167,9 +165,48 @@ const onSettingsFormSubmit = (event) => {
 	resetTimer();
 };
 
+const onTimerTypeChange = ({ target: { value } }) => {
+	switch(value) {
+		case 'pomodoro': {
+			selectedTimerType = 'pomodoro';
+			break;
+		}
+		case 'short-break': {
+			selectedTimerType = 'shortBreak';
+			break;
+		}
+		case 'long-break': {
+			selectedTimerType = 'longBreak';
+			break;
+		}
+		default:
+			break;
+	}
+	resetTimer();
+};
+
+button.addEventListener('click', function() {
+	onTimerButtonClick();
+});
+
+timerTypeInputs.forEach((input) => input.addEventListener('change', function(e) {
+	onTimerTypeChange(e);
+}));
+
+settingsButton.addEventListener('click', function() {
+	settingsDialog.showModal();
+});
+
+closeDialogButton.addEventListener('click', function() {
+	settingsDialog.close();
+});
+
 settingsForm.addEventListener('submit', function(e) {
 	onSettingsFormSubmit(e);
 });
 
+
+initializeSettingsForm();
+updateTimeIndicator(remainingTime);
 // Initializes the progress bar.
 updateProgressRing(100);
