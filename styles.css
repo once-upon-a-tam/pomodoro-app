@@ -14,6 +14,23 @@
 	font-weight: bold;
 }
 
+@font-face {
+	font-family: "Roboto Slab";
+	src: url("assets/fonts/RobotoSlab.ttf");
+}
+
+@font-face {
+	font-family: "Space Mono";
+	src: url("assets/fonts/SpaceMono-Regular.ttf");
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "Space Mono";
+	src: url("assets/fonts/SpaceMono-Bold.ttf");
+	font-weight: bold;
+}
+
 :root {
 	--clr-red: #F87070;
 	--clr-cyan: #70F3F8;
@@ -23,11 +40,13 @@
 	--clr-white: #FFFFFF;
 	--clr-gray: #EFF1FA;
 	--clr-dark-gunmetal: #161932;
+
+	--font: "Kumbh sans";
 }
 
 * {
 	box-sizing: border-box;
-	font-family: "Kumbh sans", sans-serif;
+	font-family: var(--font), sans-serif;
 	font-weight: bold;
 	margin: 0;
 }
@@ -318,6 +337,56 @@ dialog form fieldset legend {
 	font-size: 11px;
 	letter-spacing: 4px;
 	text-transform: uppercase;
+}
+
+dialog form fieldset[name="font"] {
+	grid-template-columns: unset;
+	grid-template-rows: 1fr 1fr;
+	padding-bottom: 24px;
+	border-color: transparent;
+}
+
+dialog form fieldset[name="font"] > div {
+	display: flex;
+	justify-self: center;
+	flex-direction: row;
+	gap: 16px;
+	justify-content: center;
+	align-items: center;
+}
+
+dialog form fieldset[name="font"] input[type="radio"] {
+	display: none;
+}
+
+dialog form fieldset[name="font"] label {
+	display: flex;
+	justify-self: center;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	width: 40px;
+	background-color: var(--clr-gray);
+	font-size: 15px;
+	color: var(--clr-dark-blue);
+	border-radius: 50%;
+}
+
+dialog form fieldset[name="font"] input[type="radio"]:checked + label {
+	background-color: var(--clr-dark-gunmetal);
+	color: var(--clr-white);
+}
+
+dialog form fieldset[name="font"] label[for="font-input-kumbh-sans"] {
+	font-family: 'Kumbh Sans', sans-serif;
+}
+
+dialog form fieldset[name="font"] label[for="font-input-roboto-slab"] {
+	font-family: 'Roboto Slab', sans-serif;
+}
+
+dialog form fieldset[name="font"] label[for="font-input-space-mono"] {
+	font-family: 'Space Mono', sans-serif;
 }
 
 dialog button[type="submit"] {

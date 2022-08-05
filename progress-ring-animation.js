@@ -24,6 +24,7 @@ const settings = {
 	pomodoroTime: 1200,
 	shortBreakTime: 300,
 	longBreakTime: 600,
+	font: 'Kumbh Sans',
 };
 
 let isTimerActive = false;
@@ -133,14 +134,16 @@ function onTimerButtonClick () {
  * @returns {object}
  */
 const processFormData = (form) => {
-	const inputs = [...form.elements].filter((element) => (
-		element.tagName.toLowerCase() === 'input' && element.getAttribute('type') === 'number'
-	));
+	const font = [...form.querySelectorAll('input[type="radio"][name="font"]')]
+		.find((input) => input.checked)
+		.value;
 
-	const formData = inputs.reduce((data, { name, value }) => ({
-		...data,
-		[name]: value,
-	}), {});
+	const formData = {
+		pomodoroTime: form.querySelector('#pomodoro-time-input').value,
+		shortBreakTime: form.querySelector('#pomodoro-short-break-input').value,
+		longBreakTime: form.querySelector('#pomodoro-long-break-input').value,
+		font,
+	};
 
 	return formData;
 }
@@ -153,14 +156,18 @@ const initializeSettingsForm = () => {
 
 const onSettingsFormSubmit = (event) => {
 	const {
-		pomodoro: pomodoroTime,
-		'short-break': shortBreakTime,
-		'long-break': longBreakTime,
+		pomodoroTime,
+		shortBreakTime,
+		longBreakTime,
+		font,
 	} = processFormData(event.target);
 
 	settings.pomodoroTime = pomodoroTime * 60;
 	settings.shortBreakTime = shortBreakTime * 60;
 	settings.longBreakTime = longBreakTime * 60;
+	settings.font = font;
+
+	document.querySelector(':root').style.setProperty('--font', settings.font);
 
 	resetTimer();
 };
