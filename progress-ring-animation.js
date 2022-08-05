@@ -25,6 +25,7 @@ const settings = {
 	shortBreakTime: 300,
 	longBreakTime: 600,
 	font: 'Kumbh Sans',
+	accentColor: '--clr-red',
 };
 
 let isTimerActive = false;
@@ -138,11 +139,16 @@ const processFormData = (form) => {
 		.find((input) => input.checked)
 		.value;
 
+	const accentColor = [...form.querySelectorAll('input[type="radio"][name="accent-color"]')]
+		.find((input) => input.checked)
+		.value;
+
 	const formData = {
 		pomodoroTime: form.querySelector('#pomodoro-time-input').value,
 		shortBreakTime: form.querySelector('#pomodoro-short-break-input').value,
 		longBreakTime: form.querySelector('#pomodoro-long-break-input').value,
 		font,
+		accentColor: `--clr-${accentColor}`,
 	};
 
 	return formData;
@@ -160,14 +166,17 @@ const onSettingsFormSubmit = (event) => {
 		shortBreakTime,
 		longBreakTime,
 		font,
+		accentColor,
 	} = processFormData(event.target);
 
 	settings.pomodoroTime = pomodoroTime * 60;
 	settings.shortBreakTime = shortBreakTime * 60;
 	settings.longBreakTime = longBreakTime * 60;
 	settings.font = font;
+	settings.accentColor = accentColor;
 
 	document.querySelector(':root').style.setProperty('--font', settings.font);
+	document.querySelector(':root').style.setProperty('--clr-accent', `var(${settings.accentColor})`);
 
 	resetTimer();
 };

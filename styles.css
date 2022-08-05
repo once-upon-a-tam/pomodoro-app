@@ -41,6 +41,8 @@
 	--clr-gray: #EFF1FA;
 	--clr-dark-gunmetal: #161932;
 
+	/* Customizable values */
+	--clr-accent: var(--clr-red);
 	--font: "Kumbh sans";
 }
 
@@ -166,7 +168,7 @@ section#timer-type-selection > label {
 
 section#timer-type-selection > input[type="radio"]:checked + label{
 	color: var(--clr-dark-blue);
-	background-color: var(--clr-red);
+	background-color: var(--clr-accent);
 	border-radius: 26.5px;
 	opacity: 100%;
 }
@@ -221,7 +223,7 @@ section#timer > button > svg {
 section#timer #progress-ring {
 	position: relative;
 	z-index: 60;
-	stroke: var(--clr-white);
+	stroke: var(--clr-accent);
 	stroke-linecap: round;
 	stroke-width: 8px;
 	fill: var(--clr-dark-gunmetal);
@@ -320,13 +322,41 @@ dialog button#close-dialog svg {
 	aspect-ratio: 1;
 }
 
+dialog form {
+	display: flex;
+	flex-direction: column;
+}
+
 dialog form fieldset {
+	border-color: transparent;
+	padding-bottom: 24px;
+}
+
+dialog form fieldset:not(:last-child) {
+	border-bottom: solid 1px #E3E1E1;
+}
+
+dialog form input[type="radio"] {
+	display: none;
+}
+
+dialog form input[type="radio"] + label {
+	position: relative;
+	display: flex;
+	justify-self: center;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	width: 40px;
+	font-size: 15px;
+	border-radius: 50%;
+}
+
+dialog form fieldset[name="time"] {
 	display: grid;
 	align-items: center;
 	grid-template-columns: 2fr minmax(0, 3fr);
 	gap: 8px;
-	padding-bottom: 24px;
-	border-color: transparent;
 }
 
 dialog form fieldset legend {
@@ -339,14 +369,7 @@ dialog form fieldset legend {
 	text-transform: uppercase;
 }
 
-dialog form fieldset[name="font"] {
-	grid-template-columns: unset;
-	grid-template-rows: 1fr 1fr;
-	padding-bottom: 24px;
-	border-color: transparent;
-}
-
-dialog form fieldset[name="font"] > div {
+dialog form fieldset > div {
 	display: flex;
 	justify-self: center;
 	flex-direction: row;
@@ -355,21 +378,9 @@ dialog form fieldset[name="font"] > div {
 	align-items: center;
 }
 
-dialog form fieldset[name="font"] input[type="radio"] {
-	display: none;
-}
-
 dialog form fieldset[name="font"] label {
-	display: flex;
-	justify-self: center;
-	justify-content: center;
-	align-items: center;
-	height: 40px;
-	width: 40px;
 	background-color: var(--clr-gray);
-	font-size: 15px;
 	color: var(--clr-dark-blue);
-	border-radius: 50%;
 }
 
 dialog form fieldset[name="font"] input[type="radio"]:checked + label {
@@ -387,6 +398,46 @@ dialog form fieldset[name="font"] label[for="font-input-roboto-slab"] {
 
 dialog form fieldset[name="font"] label[for="font-input-space-mono"] {
 	font-family: 'Space Mono', sans-serif;
+}
+
+dialog form fieldset[name="accent-color"] {
+	padding-bottom: 32px;
+}
+
+dialog form fieldset[name="accent-color"] label[for="accent-color-red"] {
+	background-color: var(--clr-red);
+}
+
+dialog form fieldset[name="accent-color"] label[for="accent-color-cyan"] {
+	background-color: var(--clr-cyan);
+}
+
+dialog form fieldset[name="accent-color"] label[for="accent-color-purple"] {
+	background-color: var(--clr-purple);
+}
+
+dialog form fieldset[name="accent-color"] input[type="radio"]:checked + label::before {
+    position: absolute;
+	left: 0;
+	top: 50%;
+	height: 10px;
+	width: 3px;
+	background-color: var(--clr-dark-gunmetal);
+	content: "";
+	transform: translateX(15px) rotate(-45deg);
+	transform-origin: left bottom;
+}
+
+dialog form fieldset[name="accent-color"] input[type="radio"]:checked + label::after {
+    position: absolute;
+	left: 0;
+	bottom: 10px;
+	height: 3px;
+	width: 55%;
+	background-color: var(--clr-dark-gunmetal);
+	content: "";
+	transform: translateX(15px) rotate(-45deg);
+	transform-origin: left bottom;
 }
 
 dialog button[type="submit"] {
