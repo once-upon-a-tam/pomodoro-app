@@ -68,6 +68,8 @@ main {
 	display: grid;
 	grid-auto-rows: auto 1fr;
 	gap: 48px;
+	max-width: 373px;
+	margin: auto;
 }
 
 h1 {
@@ -286,7 +288,13 @@ section#timer button #timer-button-label {
 
 dialog {
 	position: absolute;
-	inset: 48px 24px;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	min-width: 327px;
+	max-width: 540px;
 	border-color: transparent;
 	border-radius: 15px;
 	overflow: unset;
@@ -355,8 +363,14 @@ dialog form input[type="radio"] + label {
 dialog form fieldset[name="time"] {
 	display: grid;
 	align-items: center;
-	grid-template-columns: 2fr minmax(0, 3fr);
+	grid-template-rows: repeat(3, 1fr);
 	gap: 8px;
+}
+
+dialog form fieldset[name="time"] label {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	align-items: center;
 }
 
 dialog form fieldset legend {
@@ -443,5 +457,45 @@ dialog form fieldset[name="accent-color"] input[type="radio"]:checked + label::a
 dialog button[type="submit"] {
 	position: absolute;
 	top: 100%;
-	transform: translate(50%, -50%);
+	left: 0;
+	right: 0;
+	margin: auto;
+	transform: translateY(-50%);
+}
+
+@media screen and (min-width: 768px) {
+	dialog form fieldset[name="time"] {
+		max-width: 100%;
+		grid-template-rows: unset;
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	dialog form fieldset[name="time"] legend {
+		margin-left: 0;
+		font-size: 13px;
+	}
+
+	dialog form fieldset[name="time"] label {
+		grid-template-columns: unset;
+		grid-template-rows: auto 1fr;
+		width: 100%;
+	}
+
+	dialog form fieldset[name="time"] label * {
+		width: 100%;
+	}
+
+	dialog form fieldset[name="font"],
+	dialog form fieldset[name="accent-color"] {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		align-items: center;
+		padding: 24px 12px;
+	}
+
+	dialog form fieldset[name="font"] legend,
+	dialog form fieldset[name="accent-color"] legend {
+		display: contents;
+		margin: 0;
+	}
 }
