@@ -1,15 +1,16 @@
 {
   "name": "pomodoro-app",
   "version": "1.0.0",
-  "description": "A responsive pomodoro app",
+  "description": "A simple pomodoro timer app to focus on stuff that actually matters.",
   "repository": "git@github.com:once-upon-a-tam/pomodoro-app.git",
   "author": "Tam <tam.pro@outlook.fr>",
   "homepage": "once-upon-a-tam.github.io/pomodoro-app/",
+  "default": "src/index.html",
   "scripts": {
-    "start": "parcel ./index.html",
-    "build": "parcel build ./index.html --public-url ./ --dist-dir ./build",
-    "predeploy": "rm -rf dist && parcel build ./index.html --no-source-maps --public-url ./",
-    "deploy": "gh-pages -d build"
+	"start": "parcel ./src/index.html",
+    "build": "parcel build ./src/index.html",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d dist"
   },
   "assetsPath": "assets",
   "dependencies": {
