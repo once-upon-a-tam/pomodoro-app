@@ -1,5 +1,5 @@
-import { notifyTimerEnded, requestNotificationPermission } from './src/lib/notifications';
-import { getUserPreferences, saveUserPreferences } from './src/lib/userPreferences';
+import { notifyTimerEnded, requestNotificationPermission } from './lib/notifications';
+import { getUserPreferences, saveUserPreferences } from './lib/userPreferences';
 
 const button = document.querySelector('#timer > button');
 const buttonLabel = button.querySelector("#timer-button-label");
@@ -276,28 +276,38 @@ const onTimerTypeChange = ({ target: { value } }) => {
 	resetTimer();
 };
 
-button.addEventListener('click', function() {
-	onTimerButtonClick();
-});
+/**
+ * @function
+ * @name startup
+ * @description Initialises the application.
+ *
+ * @author Tam
+ */
+const startup = () => {
+	button.addEventListener('click', function() {
+		onTimerButtonClick();
+	});
+	
+	timerTypeInputs.forEach((input) => input.addEventListener('change', function(e) {
+		onTimerTypeChange(e);
+	}));
+	
+	settingsButton.addEventListener('click', function() {
+		settingsDialog.showModal();
+	});
+	
+	closeDialogButton.addEventListener('click', function() {
+		settingsDialog.close();
+	});
+	
+	settingsForm.addEventListener('submit', function(e) {
+		onSettingsFormSubmit(e);
+	});
+	
+	initialiseProgressRing();
+	updateTimeIndicator(remainingTime);
+	initializeSettingsForm();
+	requestNotificationPermission();
+}
 
-timerTypeInputs.forEach((input) => input.addEventListener('change', function(e) {
-	onTimerTypeChange(e);
-}));
-
-settingsButton.addEventListener('click', function() {
-	settingsDialog.showModal();
-});
-
-closeDialogButton.addEventListener('click', function() {
-	settingsDialog.close();
-});
-
-settingsForm.addEventListener('submit', function(e) {
-	onSettingsFormSubmit(e);
-});
-
-
-initialiseProgressRing();
-updateTimeIndicator(remainingTime);
-initializeSettingsForm();
-requestNotificationPermission();
+startup();
