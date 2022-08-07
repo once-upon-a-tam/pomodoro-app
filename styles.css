@@ -55,7 +55,7 @@
 
 body {
 	display: grid;
-	grid-template-rows: auto 1fr auto;
+	grid-template-rows: auto 1fr 1fr;
 
 	background-color: var(--clr-dark-gunmetal);
 	color: var(--clr-white);
@@ -70,6 +70,13 @@ main {
 	gap: 48px;
 	max-width: 373px;
 	margin: auto;
+	margin-top: 0;
+}
+
+footer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 h1 {

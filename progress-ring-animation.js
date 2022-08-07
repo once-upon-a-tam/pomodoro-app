@@ -11,28 +11,46 @@ const settingsDialog = document.getElementById('settings-dialog');
 const settingsForm = settingsDialog.querySelector('form');
 const closeDialogButton = document.getElementById('close-dialog');
 
-progressRing.r.baseVal.value = button.getBoundingClientRect().width * 0.40;
-progressRingWrapper.r.baseVal.value = button.getBoundingClientRect().width * 0.42;
-
-const progressRingRadius = progressRing.r.baseVal.value;
-const progressRingCircumference = progressRingRadius * 2 * Math.PI;
-
-progressRing.style.strokeDasharray = `${progressRingCircumference} ${progressRingCircumference}`;
-progressRing.style.strokeDashoffset = `${progressRingCircumference}`;
-
-const settings = {
-	pomodoroTime: 1200,
-	shortBreakTime: 300,
-	longBreakTime: 600,
+/**
+ * @var
+ * @name userPreferences
+ */
+const userPreferences = {
+	defaultTimerTime: {
+		pomodoro: 1200,
+		shortBreak: 300,
+		longBreak: 600,
+	},
+	selectedTimerType: 'pomodoro',
 	font: 'Kumbh Sans',
 	accentColor: '--clr-red',
 };
 
 let isTimerActive = false;
-let selectedTimerType = 'pomodoro';
 timerTypeInputs[0].checked = true;
-let timerRefreshId;
-let remainingTime = settings.pomodoroTime;
+let remainingTime = userPreferences.defaultTimerTime[userPreferences.selectedTimerType];
+
+let progressRingCircumference = null;
+
+/**
+ * @function
+ * @name initialiseProgressRing
+ * @description Initialises the progress ring.
+ *
+ * @author Tam
+ */
+const initialiseProgressRing = () => {
+	progressRing.r.baseVal.value = button.getBoundingClientRect().width * 0.40;
+	progressRingWrapper.r.baseVal.value = button.getBoundingClientRect().width * 0.42;
+	
+	const progressRingRadius = progressRing.r.baseVal.value;
+	progressRingCircumference = progressRingRadius * 2 * Math.PI;
+	
+	progressRing.style.strokeDasharray = `${progressRingCircumference} ${progressRingCircumference}`;
+	progressRing.style.strokeDashoffset = `${progressRingCircumference}`;
+
+	progressRing.style.strokeDashoffset = 0;
+}
 
 /**
  * @function
@@ -41,9 +59,13 @@ let remainingTime = settings.pomodoroTime;
  *
  * @param {number} percent The progress percentage.
  */
-function updateProgressRing(percent) {
-  const offset = progressRingCircumference - percent / 100 * progressRingCircumference;
-  progressRing.style.strokeDashoffset = offset;
+const updateProgressRing = (percent) => {
+	if (progressRingCircumference === null) {
+		initialiseProgressRing();
+	}
+
+	const offset = progressRingCircumference - percent / 100 * progressRingCircumference;
+	progressRing.style.strokeDashoffset = offset;
 }
 
 /**
@@ -56,70 +78,107 @@ function updateProgressRing(percent) {
  * @param {number} remainingTime The remaining time in seconds.
  */
 function updateTimeIndicator (remainingTime) {
-	let minutes = parseInt(remainingTime / 60, 10)
-	let seconds = parseInt(remainingTime % 60, 10)
-
-	minutes = `${minutes < 10 ? '0' : ''}${minutes}`;
-	seconds = `${seconds < 10 ? '0' : ''}${seconds}`;
+	let minutes = parseInt(remainingTime / 60, 10).toString().padStart(2, '0');
+	let seconds = parseInt(remainingTime % 60, 10).toString().padStart(2, '0');
 
 	timeIndicator.firstElementChild.innerText = minutes;
 	timeIndicator.lastElementChild.innerText = seconds;
 }
 
+let intervalId;
+let timeoutId;
+
 /**
  * @function
- * @name refreshTimer
- * @description Generates an interval to refresh the timer every second
+ * @name updateTimer
+ * @description The method to use every second to refresh the timer's UI.
  *
  * @author Tam
- *
- * @returns {number} The interval id.
  */
-function refreshTimer() {
-	timerRefreshId = setInterval(() => {
-		if (remainingTime === 0) {
-			buttonLabel.innerText = "Restart";
-			clearInterval(timerRefreshId);
-		}
+const updateTimer = () => {
+	updateProgressRing(remainingTime / userPreferences.defaultTimerTime[userPreferences.selectedTimerType] * 100);
+	updateTimeIndicator(remainingTime);
+	remainingTime--;
+}
 
-		updateProgressRing(remainingTime / settings[`${selectedTimerType}Time`] * 100);
-		updateTimeIndicator(remainingTime);
+/**
+ * @function
+ * @name startTimer
+ * @description Starts the timer.
+ *
+ * @author Tam
+ */
+const startTimer = () => {
+	isTimerActive = true;
+	buttonLabel.innerText = "Pause";
+	updateTimer();
 
-		remainingTime--;
+	intervalId = setInterval(() => {
+		updateTimer();
 	}, 1000);
 
-	return timerRefreshId;
+	timeoutId = setTimeout(() => {
+	resetTimer();
+	// @TODO: Send a notification to the user indicating the time is up.
+	}, userPreferences.defaultTimerTime[userPreferences.selectedTimerType] * 1000);
+}
+
+/**
+ * @function
+ * @name pauseTimer
+ * @description Pauses the timer.
+ *
+ * @author Tam
+ */
+const pauseTimer = () => {
+	isTimerActive = false;
+	buttonLabel.innerText = "Resume";
+	clearInterval(intervalId);
+	clearTimeout(timeoutId);
 }
 
 /**
  * @function
  * @name resetTimer
- * @description Resets the timer to the default value.
- *
+ * @description Resets the remaining time and restarts the timer.
+ * 
  * @author Tam
  */
 const resetTimer = () => {
-	remainingTime = settings[`${selectedTimerType}Time`];
-	clearInterval(timerRefreshId);
-	updateTimeIndicator(remainingTime);
+	buttonLabel.innerText = "Start";
+	clearInterval(intervalId);
+	clearTimeout(timeoutId);
+	remainingTime = userPreferences.defaultTimerTime[userPreferences.selectedTimerType];
 	updateProgressRing(100);
-	buttonLabel.innerText = 'Start';
+	updateTimeIndicator(remainingTime);
+}
+
+/**
+ * @function
+ * @name restartTimer
+ * @description Restarts the timer after resetting it.
+ * 
+ * @author Tam
+ */
+ const restartTimer = () => {
+	resetTimer();
+	startTimer();
 }
 
 /**
  * @function
  * @name onTimerButtonClick
  * @description Handles the click event on the timer button.
+ *
+ * @author Tam
  */
-function onTimerButtonClick () {
-	if (!isTimerActive) {
-		isTimerActive = true;
-		buttonLabel.innerText = "Pause";
-		timerRefreshId = refreshTimer();
+const onTimerButtonClick = () => {
+	if (!isTimerActive && remainingTime > 0) {
+		startTimer();
+	} else if (!isTimerActive && remainingTime === 0) {
+		restartTimer();
 	} else {
-		clearInterval(timerRefreshId);
-		isTimerActive = false;
-		buttonLabel.innerText = "Start";
+		pauseTimer();
 	}
 }
 
@@ -144,9 +203,9 @@ const processFormData = (form) => {
 		.value;
 
 	const formData = {
-		pomodoroTime: form.querySelector('#pomodoro-time-input').value,
-		shortBreakTime: form.querySelector('#pomodoro-short-break-input').value,
-		longBreakTime: form.querySelector('#pomodoro-long-break-input').value,
+		pomodoro: form.querySelector('#pomodoro-time-input').value,
+		shortBreak: form.querySelector('#pomodoro-short-break-input').value,
+		longBreak: form.querySelector('#pomodoro-long-break-input').value,
 		font,
 		accentColor: `--clr-${accentColor}`,
 	};
@@ -154,50 +213,68 @@ const processFormData = (form) => {
 	return formData;
 }
 
+/**
+ * @function
+ * @name initializeSettingsForm
+ * @description Initialises the settings form.
+ *
+ * @author Tam
+ */
 const initializeSettingsForm = () => {
-	document.getElementById('pomodoro-time-input').value = settings.pomodoroTime / 60;
-	document.getElementById('pomodoro-short-break-input').value = settings.shortBreakTime / 60;
-	document.getElementById('pomodoro-long-break-input').value = settings.longBreakTime / 60;
+	// @TODO: Load userPreferences with local storage values if there are any.
+	const { pomodoro, shortBreak, longBreak } = userPreferences.defaultTimerTime;
+
+	document.getElementById('pomodoro-time-input').value = pomodoro / 60;
+	document.getElementById('pomodoro-short-break-input').value = shortBreak / 60;
+	document.getElementById('pomodoro-long-break-input').value = longBreak / 60;
 }
 
+/**
+ * @function
+ * @name onSettingsFormSubmit
+ * @description Handles the submit event on the settings form.
+ *
+ * @param {*} event
+ */
 const onSettingsFormSubmit = (event) => {
-	const {
-		pomodoroTime,
-		shortBreakTime,
-		longBreakTime,
-		font,
-		accentColor,
-	} = processFormData(event.target);
+	const { pomodoro, shortBreak, longBreak, font, accentColor } = processFormData(event.target);
 
-	settings.pomodoroTime = pomodoroTime * 60;
-	settings.shortBreakTime = shortBreakTime * 60;
-	settings.longBreakTime = longBreakTime * 60;
-	settings.font = font;
-	settings.accentColor = accentColor;
+	// @TODO: Save the userPreferences in local storage.
+	userPreferences.defaultTimerTime = {
+		pomodoro: pomodoro * 60,
+		shortBreak: shortBreak * 60,
+		longBreak: longBreak * 60,
+	};	
+	userPreferences.font = font;
+	userPreferences.accentColor = accentColor;
 
-	document.querySelector(':root').style.setProperty('--font', settings.font);
-	document.querySelector(':root').style.setProperty('--clr-accent', `var(${settings.accentColor})`);
+	document.querySelector(':root').style.setProperty('--font', userPreferences.font);
+	document.querySelector(':root').style.setProperty('--clr-accent', `var(${userPreferences.accentColor})`);
 
 	resetTimer();
 };
 
+const timerTypeValues = new Map([
+	['pomodoro', 'pomodoro'],
+	['short-break', 'shortBreak'],
+	['long-break', 'longBreak'],
+]);
+
+/**
+ * @function
+ * @name onTimerTypeInputChange
+ * @description Handles the change event on the timer type input.
+ *
+ * @author Tam
+ *
+ * @param {string} value The selected timer type.
+ */
 const onTimerTypeChange = ({ target: { value } }) => {
-	switch(value) {
-		case 'pomodoro': {
-			selectedTimerType = 'pomodoro';
-			break;
-		}
-		case 'short-break': {
-			selectedTimerType = 'shortBreak';
-			break;
-		}
-		case 'long-break': {
-			selectedTimerType = 'longBreak';
-			break;
-		}
-		default:
-			break;
+	if (!timerTypeValues.has(value)) {
+		return;
 	}
+
+	userPreferences.selectedTimerType = timerTypeValues.get(value);
 	resetTimer();
 };
 
@@ -222,7 +299,6 @@ settingsForm.addEventListener('submit', function(e) {
 });
 
 
-initializeSettingsForm();
+initialiseProgressRing();
 updateTimeIndicator(remainingTime);
-// Initializes the progress bar.
-updateProgressRing(100);
+initializeSettingsForm();
