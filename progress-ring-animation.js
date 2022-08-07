@@ -1,3 +1,4 @@
+import { notifyTimerEnded, requestNotificationPermission } from './src/lib/notifications';
 import { getUserPreferences, saveUserPreferences } from './src/lib/userPreferences';
 
 const button = document.querySelector('#timer > button');
@@ -121,7 +122,7 @@ const startTimer = () => {
 
 	timeoutId = setTimeout(() => {
 	resetTimer();
-	// @TODO: Send a notification to the user indicating the time is up.
+	notifyTimerEnded();
 	}, userPreferences.defaultTimerTime[userPreferences.selectedTimerType] * 1000);
 }
 
@@ -299,3 +300,4 @@ settingsForm.addEventListener('submit', function(e) {
 initialiseProgressRing();
 updateTimeIndicator(remainingTime);
 initializeSettingsForm();
+requestNotificationPermission();
