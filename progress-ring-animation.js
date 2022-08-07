@@ -1,3 +1,5 @@
+import { getUserPreferences, saveUserPreferences } from './src/lib/userPreferences';
+
 const button = document.querySelector('#timer > button');
 const buttonLabel = button.querySelector("#timer-button-label");
 const progressRing = document.getElementById('progress-ring');
@@ -15,16 +17,7 @@ const closeDialogButton = document.getElementById('close-dialog');
  * @var
  * @name userPreferences
  */
-const userPreferences = {
-	defaultTimerTime: {
-		pomodoro: 1200,
-		shortBreak: 300,
-		longBreak: 600,
-	},
-	selectedTimerType: 'pomodoro',
-	font: 'Kumbh Sans',
-	accentColor: '--clr-red',
-};
+const userPreferences = getUserPreferences();
 
 let isTimerActive = false;
 timerTypeInputs[0].checked = true;
@@ -221,7 +214,6 @@ const processFormData = (form) => {
  * @author Tam
  */
 const initializeSettingsForm = () => {
-	// @TODO: Load userPreferences with local storage values if there are any.
 	const { pomodoro, shortBreak, longBreak } = userPreferences.defaultTimerTime;
 
 	document.getElementById('pomodoro-time-input').value = pomodoro / 60;
@@ -239,7 +231,6 @@ const initializeSettingsForm = () => {
 const onSettingsFormSubmit = (event) => {
 	const { pomodoro, shortBreak, longBreak, font, accentColor } = processFormData(event.target);
 
-	// @TODO: Save the userPreferences in local storage.
 	userPreferences.defaultTimerTime = {
 		pomodoro: pomodoro * 60,
 		shortBreak: shortBreak * 60,
@@ -247,6 +238,8 @@ const onSettingsFormSubmit = (event) => {
 	};	
 	userPreferences.font = font;
 	userPreferences.accentColor = accentColor;
+
+	saveUserPreferences(userPreferences);
 
 	document.querySelector(':root').style.setProperty('--font', userPreferences.font);
 	document.querySelector(':root').style.setProperty('--clr-accent', `var(${userPreferences.accentColor})`);
@@ -275,6 +268,7 @@ const onTimerTypeChange = ({ target: { value } }) => {
 	}
 
 	userPreferences.selectedTimerType = timerTypeValues.get(value);
+	saveUserPreferences(userPreferences);
 	resetTimer();
 };
 
