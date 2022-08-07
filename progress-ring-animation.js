@@ -13,6 +13,12 @@ const settingsDialog = document.getElementById('settings-dialog');
 const settingsForm = settingsDialog.querySelector('form');
 const closeDialogButton = document.getElementById('close-dialog');
 
+const timerTypeValues = new Map([
+	['pomodoro', 'pomodoro'],
+	['short-break', 'shortBreak'],
+	['long-break', 'longBreak'],
+]);
+
 /**
  * @var
  * @name userPreferences
@@ -20,7 +26,10 @@ const closeDialogButton = document.getElementById('close-dialog');
 const userPreferences = getUserPreferences();
 
 let isTimerActive = false;
-timerTypeInputs[0].checked = true;
+
+// Checks the timer type radio button linked to the selected timer type.
+[...timerTypeInputs].find((element) => timerTypeValues.get(element.value) === userPreferences.selectedTimerType).checked = true;
+
 let remainingTime = userPreferences.defaultTimerTime[userPreferences.selectedTimerType];
 
 let progressRingCircumference = null;
@@ -246,12 +255,6 @@ const onSettingsFormSubmit = (event) => {
 
 	resetTimer();
 };
-
-const timerTypeValues = new Map([
-	['pomodoro', 'pomodoro'],
-	['short-break', 'shortBreak'],
-	['long-break', 'longBreak'],
-]);
 
 /**
  * @function
