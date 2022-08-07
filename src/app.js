@@ -1,5 +1,5 @@
-import { notifyTimerEnded, requestNotificationPermission } from './lib/notifications';
-import { getUserPreferences, saveUserPreferences } from './lib/userPreferences';
+import { notifyTimerEnded, requestNotificationPermission } from './lib/notifications.js';
+import { getUserPreferences, saveUserPreferences } from './lib/userPreferences.js';
 
 const button = document.querySelector('#timer > button');
 const buttonLabel = button.querySelector("#timer-button-label");
