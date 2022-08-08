@@ -5,11 +5,11 @@
   "repository": "git@github.com:once-upon-a-tam/pomodoro-app.git",
   "author": "Tam <tam.pro@outlook.fr>",
   "homepage": "once-upon-a-tam.github.io/pomodoro-app/",
-  "default": "index.html",
+  "default": "./index.html",
   "scripts": {
-	"start": "parcel ./index.html",
-    "build": "parcel build ./index.html",
-    "predeploy": "yarn run build",
+    "start": "parcel ./index.html",
+    "build": "parcel build ./index.html --public-url ./",
+    "predeploy": "rm -rf dist && parcel build ./index.html --no-source-maps --public-url ./",
     "deploy": "gh-pages -d dist"
   },
   "assetsPath": "assets",
