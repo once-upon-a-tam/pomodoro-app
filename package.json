@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A simple pomodoro timer app to focus on stuff that actually matters.",
   "repository": "git@github.com:once-upon-a-tam/pomodoro-app.git",
+  "license": "MIT",
   "author": "Tam <tam.pro@outlook.fr>",
   "homepage": "once-upon-a-tam.github.io/pomodoro-app/",
   "default": "./index.html",
