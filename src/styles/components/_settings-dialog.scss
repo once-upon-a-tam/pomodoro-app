@@ -44,6 +44,8 @@ dialog {
 	form {
 		display: flex;
 		flex-direction: column;
+		gap: 16px;
+		padding-top: 16px;
 
 		fieldset {
 			border-color: transparent;
@@ -172,6 +174,7 @@ dialog {
 		top: 100%;
 		left: 0;
 		right: 0;
+		width: fit-content;
 		margin: auto;
 		transform: translateY(-50%);
 	}	
