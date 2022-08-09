@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="src/styles/index.scss" />
+	<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+	
+	<!-- Canonical -->
+	<link rel="canonical" href="http://once-upon-a-tam.github.io/pomodoro-app">
+	<!-- Robots -->
+	<meta name="robots" content="nofollow">
+	<!-- Device -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Title -->
+	<title>Pomodoro app</title>
+	<!-- Description -->
+	<meta name="description" content="A simple pomodoro timer app to focus on stuff that actually matters.">
+	<!-- Social -->
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Pomodoro app">
+	<meta name="twitter:description" content="A simple pomodoro timer app to focus on stuff that actually matters.">
+	<meta name="twitter:image" content="https://once-upon-a-tam.github.io/pomodoro-app/assets/preview.png">
+
+	<!-- Facebook -->
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://once-upon-a-tam.github.io/pomodoro-app">
+	<meta property="og:title" content="Pomodoro app">
+	<meta property="og:description" content="A simple pomodoro timer app to focus on stuff that actually matters.">
+	<meta property="og:image" content="https://once-upon-a-tam.github.io/pomodoro-app/assets/preview.png">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<base href=".">
+</head>
+<body>
+	<header>
+		<h1>pomodoro</h1>
+	</header>
+	<main>
+		<section id="timer-type-selection">
+			<input type="radio" name="timer-type" value="pomodoro" id="timer-type-input-pomodoro">
+			<label for="timer-type-input-pomodoro">pomodoro</label>
+
+			<input type="radio" name="timer-type" value="short-break" id="timer-type-input-short-break">
+			<label for="timer-type-input-short-break">short break</label>
+
+			<input type="radio" name="timer-type" value="long-break" id="timer-type-input-long-break">
+			<label for="timer-type-input-long-break">long break</label>
+		</section>
+
+		<section id="timer">
+			<button type="button">
+				<svg> 
+					<circle id="progress-ring-wrapper" cx="50%" cy="50%" />
+					<circle id="progress-ring" cx="50%" cy="50%" />
+				  </svg>
+				</svg>
+				<time id="timer-time">
+					<span>20</span>
+					<span>:</span>
+					<span>00</span>
+				</time>
+				<span id="timer-button-label">start</span>
+			</button>
+		</section>
+	</main>
+	<footer>
+		<button type="button" id="settings-dialog-toggle">
+			<img src="./assets/icon-settings.svg" alt="settings" width="28" height="28">
+		</button>
+	</footer>
+
+	<dialog id="settings-dialog">
+		<header>
+			<h1>Settings</h1>
+			<button type="button" id="close-dialog">
+				<img src="./assets/icon-close.svg" alt="close" width="28" height="28">
+			</button>
+		</header>
+		<form method="dialog" id="settings-form">
+			<fieldset name="time">
+				<legend>Time (minutes)</legend>
+				<label for="pomodoro-time-input">
+					pomodoro
+					<input type="number" id="pomodoro-time-input" name="pomodoro">
+				</label>
+				
+				<label for="pomodoro-short-break-input">
+					short break
+					<input type="number" id="pomodoro-short-break-input" name="short-break">
+				</label>
+				<label for="pomodoro-long-break-input">
+					long break
+					<input type="number" id="pomodoro-long-break-input" name="long-break">
+				</label>
+			</fieldset>
+			<fieldset name="font">
+				<legend>Font</legend>
+				<div>
+					<input type="radio" name="font" id="font-input-kumbh-sans" value="Kumbh Sans" checked>
+					<label for="font-input-kumbh-sans">Aa</label>
+					<input type="radio" name="font" id="font-input-roboto-slab" value="Roboto Slab">
+					<label for="font-input-roboto-slab">Aa</label>
+					<input type="radio" name="font" id="font-input-space-mono" value="Space Mono">
+					<label for="font-input-space-mono">Aa</label>
+				</div>
+			</fieldset>
+			<fieldset name="accent-color">
+				<legend>Color</legend>
+				<div>
+					<input type="radio" name="accent-color" id="accent-color-red" value="red" checked>
+					<label for="accent-color-red" aria-label="red"></label>
+					<input type="radio" name="accent-color" id="accent-color-cyan" value="cyan">
+					<label for="accent-color-cyan" aria-label="cyan"></label>
+					<input type="radio" name="accent-color" id="accent-color-purple" value="purple">
+					<label for="accent-color-purple" aria-label="purple"></label>
+				</div>
+			</fieldset>
+		</form>
+		<button type="submit" form="settings-form">Apply</button>
+	</dialog>
+	<script type="module" src="src/app.js"></script>
+</body>
+</html>

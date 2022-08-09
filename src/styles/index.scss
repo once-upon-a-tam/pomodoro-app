@@ -1,0 +1,67 @@
+@charset 'utf-8';
+@use './base' as *;
+@use './components' as *;
+
+:root {
+	/* Customizable values */
+	--clr-accent: var(--clr-red);
+	--font: "Kumbh sans";
+}
+
+* {
+	font-family: var(--font), sans-serif;
+	font-weight: bold;
+	margin: 0;
+}
+
+body {
+	display: grid;
+	grid-template-rows: auto 1fr 1fr;
+
+	background-color: var(--clr-dark-gunmetal);
+	color: var(--clr-white);
+	margin: 0;
+	padding: 0;
+	height: 100vh;
+}
+
+main {
+	display: grid;
+	grid-auto-rows: auto 1fr;
+	gap: 48px;
+	max-width: 373px;
+	margin: auto;
+	margin-top: 0;
+}
+
+button {
+	font-size: 16px;
+	padding: 16px 48px;
+	border-radius: 26.5px;
+	background-color: var(--clr-red);
+	color: var(--clr-white);
+	border-color: transparent;
+	cursor: pointer;
+}
+
+button:hover {
+	filter: brightness(120%);
+}
+
+label {
+	font-size: 12px;
+	font-weight: bold;
+	color: var(--clr-dark-blue);
+	cursor: pointer;
+}
+
+input, select {
+	font-size: 14px;
+	font-weight: bold;
+	color: var(--clr-dark-blue);
+	background-color: var(--clr-gray);
+	height: 40px;
+	padding-left: 16px;
+	border-radius: 10px;
+	border-color: transparent;
+}

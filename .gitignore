@@ -1,0 +1,11 @@
+*.sketch
+*.fig
+*.xd
+
+.DS_Store
+.prettierignore
+
+node_modules
+.parcel-cache
+dist/
+build/

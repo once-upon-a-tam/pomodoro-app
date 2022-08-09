@@ -1,0 +1,91 @@
+section#timer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	& > button {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 95%;
+		max-width: 350px;
+		aspect-ratio: 1;
+	
+		background: linear-gradient(315deg, #2E325A 0%, #0E112A 100%);
+		border-color: var(--clr-dark-gunmetal);
+		border-radius: 50%;
+		cursor: pointer;
+	
+		letter-spacing: 13px;
+		font-size: 14px;
+		text-transform: uppercase;
+		text-align: center;
+	
+		box-shadow: -50px -50px 100px #272C5A, 50px 50px 100px #121530;
+
+		& > svg {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+		}
+
+		#timer-button-label {
+			position: relative;
+			z-index: 60;
+			margin-right: -13px; /* counters the letter-spacing on last character */
+			text-align: center;
+			width: fit-content;
+		}
+	}
+
+	#progress-ring {
+		position: relative;
+		z-index: 60;
+		stroke: var(--clr-accent);
+		stroke-linecap: round;
+		stroke-width: 8px;
+		fill: var(--clr-dark-gunmetal);
+		/* axis compensation */
+		transform: rotate(-90deg);
+		transform-origin: 50% 50%;
+	}
+
+	#progress-ring-wrapper {
+		position: relative;
+		z-index: 59;
+		stroke-width: 16px;
+		stroke: var(--clr-dark-gunmetal);
+		fill: var(--clr-dark-gunmetal);
+		
+		/* axis compensation */
+		transform: rotate(-90deg);
+		transform-origin: 50% 50%;
+	}
+
+	time {
+		position: relative;
+		z-index: 61;
+		display: grid;
+		align-items: center;
+		width: 100%;
+		grid-template-columns: 1fr .25fr 1fr;
+		font-size: 80px;
+		letter-spacing: -4px;
+
+		& > span:first-child {
+			text-align: end;
+		}
+
+		& > span:nth-child(2) {
+			text-align: center;
+		}
+
+		& > span:last-child {
+			text-align: start;
+		}
+	}
+}
