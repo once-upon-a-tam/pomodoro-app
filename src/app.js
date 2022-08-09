@@ -241,6 +241,8 @@ const initializeSettingsForm = () => {
 const onSettingsFormSubmit = (event) => {
 	const { pomodoro, shortBreak, longBreak, font, accentColor } = processFormData(event.target);
 
+	const previousUserPreferences = { ...userPreferences };
+
 	userPreferences.defaultTimerTime = {
 		pomodoro: pomodoro * 60,
 		shortBreak: shortBreak * 60,
@@ -254,7 +256,9 @@ const onSettingsFormSubmit = (event) => {
 	document.querySelector(':root').style.setProperty('--font', userPreferences.font);
 	document.querySelector(':root').style.setProperty('--clr-accent', `var(${userPreferences.accentColor})`);
 
-	resetTimer();
+	if (previousUserPreferences.defaultTimerTime[userPreferences.selectedTimerType] !== userPreferences.defaultTimerTime[userPreferences.selectedTimerType]) {
+		resetTimer();
+	}
 };
 
 /**
