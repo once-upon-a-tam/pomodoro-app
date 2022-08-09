@@ -1,0 +1,29 @@
+section#timer-type-selection {
+	position: relative;
+	z-index: 100;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	background-color: var(--clr-dark-gunmetal);
+	border-radius: 32px;
+	padding: 8px 6px;
+
+	& > label {
+		font-size: 12px;
+		color: var(--clr-white);
+		padding: 18px 24px;
+		cursor: pointer;
+		opacity: 40%;
+	}
+
+	& > input[type="radio"] {
+		display: none;
+
+		&:checked + label{
+			color: var(--clr-dark-blue);
+			background-color: var(--clr-accent);
+			border-radius: 26.5px;
+			opacity: 100%;
+		}
+	}
+}

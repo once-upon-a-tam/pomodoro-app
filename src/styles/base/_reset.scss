@@ -1,0 +1,37 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+}
+
+html,
+body,
+textarea,
+figure,
+label {
+	margin: 0;
+	padding: 0;
+}
+
+/* avoid margins on nested elements */
+li p,
+li ul,
+li ol {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+/* pictures */
+img {
+	width: auto;
+	height: auto;
+	vertical-align: middle;
+}
+
+a img {
+	border: 0;
+}
+
+/* scripts */
+body > script {
+	display: none !important;
+}

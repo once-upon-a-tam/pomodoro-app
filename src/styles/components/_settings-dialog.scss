@@ -1,0 +1,216 @@
+dialog {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	min-width: 327px;
+	max-width: 540px;
+	border-color: transparent;
+	border-radius: 15px;
+	overflow: unset;
+
+	header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 72px;
+		border-bottom: solid 1px #E3E1E1;
+
+		h1 {
+			font-size: 20px;
+			line-height: 24px;
+			color: var(--clr-dark-gunmetal);
+			letter-spacing: 0;
+		}
+
+		button#close-dialog {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: auto;
+			height: auto;
+			padding: 8px;
+			background-color: transparent;
+
+			svg {
+				height: auto;
+				aspect-ratio: 1;
+			}
+		}
+	}
+	
+	form {
+		display: flex;
+		flex-direction: column;
+
+		fieldset {
+			border-color: transparent;
+			padding-bottom: 24px;
+
+			&:not(:last-child) {
+				border-bottom: solid 1px #E3E1E1;
+			}
+
+			legend {
+				grid-column: 1 / 2;
+				width: auto;
+				margin: 25px auto 18px auto;
+			
+				font-size: 11px;
+				letter-spacing: 4px;
+				text-transform: uppercase;
+			}
+
+			& > div {
+				display: flex;
+				justify-self: center;
+				flex-direction: row;
+				gap: 16px;
+				justify-content: center;
+				align-items: center;
+			}
+
+			&[name="time"] {
+				display: grid;
+				align-items: center;
+				grid-template-rows: repeat(3, 1fr);
+				gap: 8px;
+
+				label {
+					display: grid;
+					grid-template-columns: repeat(2, 1fr);
+					align-items: center;
+				}
+			}
+
+			&[name="font"] {
+				label {
+					background-color: var(--clr-gray);
+					color: var(--clr-dark-blue);
+				}
+
+				input[type="radio"]:checked + label {
+					background-color: var(--clr-dark-gunmetal);
+					color: var(--clr-white);
+				}
+
+				label[for="font-input-kumbh-sans"] {
+					font-family: 'Kumbh Sans', sans-serif;
+				}
+				label[for="font-input-roboto-slab"] {
+					font-family: 'Roboto Slab', sans-serif;
+				}
+				label[for="font-input-space-mono"] {
+					font-family: 'Space Mono', sans-serif;
+				}
+			}
+			
+			&[name="accent-color"] {
+				padding-bottom: 32px;
+
+				label[for="accent-color-red"] {
+					background-color: var(--clr-red);
+				}
+
+				label[for="accent-color-cyan"] {
+					background-color: var(--clr-cyan);
+				}
+
+				label[for="accent-color-purple"] {
+					background-color: var(--clr-purple);
+				}
+
+				input[type="radio"]:checked + label {
+					&::before {
+						position: absolute;
+						left: 0;
+						top: 50%;
+						height: 10px;
+						width: 3px;
+						background-color: var(--clr-dark-gunmetal);
+						content: "";
+						transform: translateX(15px) rotate(-45deg);
+						transform-origin: left bottom;
+					}
+
+					&::after {
+						position: absolute;
+						left: 0;
+						bottom: 10px;
+						height: 3px;
+						width: 55%;
+						background-color: var(--clr-dark-gunmetal);
+						content: "";
+						transform: translateX(15px) rotate(-45deg);
+						transform-origin: left bottom;
+					}
+				}
+			}
+		}
+		
+		input[type="radio"] {
+			display: none;
+
+			& + label {
+				position: relative;
+				display: flex;
+				justify-self: center;
+				justify-content: center;
+				align-items: center;
+				height: 40px;
+				width: 40px;
+				font-size: 15px;
+				border-radius: 50%;
+			}
+		}
+	}
+
+	button[type="submit"][form="settings-form"] {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		margin: auto;
+		transform: translateY(-50%);
+	}	
+}
+
+@media screen and (min-width: 768px) {
+	dialog form fieldset {
+		&[name="time"] {
+			max-width: 100%;
+			grid-template-rows: unset;
+			grid-template-columns: repeat(3, 1fr);
+	
+			legend {
+				margin-left: 0;
+				font-size: 13px;
+			}
+	
+			label {
+				grid-template-columns: unset;
+				grid-template-rows: auto 1fr;
+				width: 100%;
+	
+				* {
+					width: 100%;
+				}
+			}
+		}
+
+		&[name="font"],
+		&[name="accent-color"] {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			align-items: center;
+			padding: 24px 12px;
+	
+			legend {
+				display: contents;
+				margin: 0;
+			}
+		}
+	}
+}
