@@ -2,29 +2,34 @@
 	font-family: "Kumbh sans";
 	src: url("/assets/fonts/KumbhSans-Regular.ttf");
 	font-weight: normal;
+	font-display: swap;
 }
 
 @font-face {
 	font-family: "Kumbh sans";
 	src: url("/assets/fonts/KumbhSans-Bold.ttf");
 	font-weight: bold;
+	font-display: swap;
 }
 
 @font-face {
 	font-family: "Roboto Slab";
 	src: url("/assets/fonts/RobotoSlab.ttf");
+	font-display: swap;
 }
 
 @font-face {
 	font-family: "Space Mono";
 	src: url("/assets/fonts/SpaceMono-Regular.ttf");
 	font-weight: normal;
+	font-display: swap;
 }
 
 @font-face {
 	font-family: "Space Mono";
 	src: url("/assets/fonts/SpaceMono-Bold.ttf");
 	font-weight: bold;
+	font-display: swap;
 }
 
 h1 {
